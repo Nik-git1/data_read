@@ -2,25 +2,27 @@ import React from 'react';
 
 function Sidebar({ handleOptionClick }) {
   return (
-    <div className="bg-gray-100 w-1/6 h-screen flex flex-col items-center">
-      <ul className="text-gray-900 w-full">
-        <div >
-          <button
-            className="w-full hover:bg-gray-200  text-center h-20 text-3xl"
-            onClick={() => handleOptionClick('auc')}
-          >
-            AUC Value
-          </button>
-        </div>
-        <div>
-          <button
-            className="w-full hover:bg-gray-200 text-center h-20 text-3xl"
-            onClick={() => handleOptionClick('replicates')}
-          >
-            Replicates
-          </button>
-        </div>
-      </ul>
+    <div className="fixed left-0 h-screen flex bg-gray-200 w-[25%]">
+      <div className="overflow-y-auto w-full">
+        <ul className="text-gray-900">
+          <li className="h-20">
+            <button
+              className="w-full hover:bg-gray-300 text-center h-full text-2xl"
+              onClick={() => handleOptionClick('auc')}
+            >
+              AUC Value
+            </button>
+          </li>
+          <li className="h-20">
+            <button
+              className="w-full hover:bg-gray-300 text-center h-full text-2xl"
+              onClick={() => handleOptionClick('replicates')}
+            >
+              Replicates
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 }

@@ -3,19 +3,21 @@ import * as d3 from "d3";
 
 const ErrorBar = ({ data }) => {
   const svgRef = useRef();
+  console.log(data)
 
   useEffect(() => {
     if (data.length > 0) {
-
-      data.unshift({ concentration: '0.0', OD: 0, minOD: 0, maxOD: 0 });
-
+      console.log(data[1])
+      data.shift();
+       data.unshift({ concentration: '0.0', OD: 0, minOD: 0, maxOD: 0 });
+      console.log(data)
       const cleanedData = data.map((d) => ({
         concentration: d.concentration.replace(/[^\d.-]/g, ""),
         OD: d.OD,
         minOD: d.minOD,
         maxOD: d.maxOD,
       }));
-    
+      console.log(cleanedData)
       const svg = d3.select(svgRef.current);
 
       const width = 800;

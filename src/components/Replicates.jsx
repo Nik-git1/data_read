@@ -1,7 +1,6 @@
 import { read, utils } from "xlsx";
 import React, { useState, useRef, useEffect } from "react";
 import ErrorBar from "./ErrorBar.jsx";
-import DataLoad from "./DataLoad.jsx";
 
 export default function Replicates() {
   const [results, setResults] = useState([]);
@@ -11,6 +10,7 @@ export default function Replicates() {
   const resetPlate = () => {
     Plateref.current.value = null;
     setPlate([]);
+    setResults([]); 
   };
 
   const plateUpload = ($event) => {
@@ -84,37 +84,43 @@ export default function Replicates() {
     <div>
       <div className='m-8'>
         <div className='font-bold text-2xl'>Calculate Replicates values</div>
-    </div>
-      <div className="flex items-center  justify-around ">
-        <label htmlFor="plateInput" className="mr-4">
-          Choose File
-        </label>
-        <div className="relative">
-          <input
-            type="file"
-            id="plateInput"
-            className="opacity-0 absolute inset-0 z-50"
-            ref={Plateref}
-            required
-            onChange={plateUpload}
-            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-          />
-          <label
-            htmlFor="plateInput"
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
-          >
-            Upload
-          </label>
         </div>
-        <button
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 ml-4 rounded align-middle"
-          onClick={resetPlate}
-        >
-          Reset Plate
-        </button>
-      </div>
+<div className="flex items-center m-4 justify-around">
+  <label htmlFor="plateInput" className="mr-4">
+    Choose File
+  </label>
+  <div className="relative">
+    <input
+      type="file"
+      id="plateInput"
+      className="opacity-0 absolute inset-0 z-50"
+      ref={Plateref}
+      required
+      onChange={plateUpload}
+      accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+    />
+    <label
+      htmlFor="plateInput"
+      className={`bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded cursor-pointer ${
+        plate.length > 0 ? 'bg-green-500 hover:bg-green-400 border-green-700 hover:border-green-500' : ''
+      }`}
+    >
+      {plate.length > 0 ? 'File Uploaded' : 'Upload'}
+    </label>
+  </div>
+  <button
+    className={`${
+      plate.length === 0 ? 'bg-red-300 text-gray-700' : 'bg-red-500 hover:bg-red-400 text-white'
+    } font-bold py-2 px-4 ml-4 border-b-4 border-red-700 hover:border-red-500 rounded align-middle`}
+    onClick={resetPlate}
+    disabled={plate.length === 0}
+  >
+    Reset Plate
+  </button>
+</div>
 
-      {results.length ? (
+
+      {results.length>0 ? (
         <ErrorBar data={results} />
       ) : (
         <p>No results to display.</p>

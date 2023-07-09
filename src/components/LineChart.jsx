@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import annotationPlugin from "chartjs-plugin-annotation";
+import { useState } from 'react';
 
 ChartJS.register(
   CategoryScale,
@@ -23,9 +24,11 @@ ChartJS.register(
   Legend,
   annotationPlugin
 );
-const Xvalue=10
-const Yvalue=0.8
-let label_map=["click the button"]
+
+const Xvalue = 10;
+const Yvalue = 0.8;
+let label_map = ["click the button"];
+
 export const options = {
   responsive: true,
   plugins: {
@@ -43,7 +46,7 @@ export const options = {
           type: "label",
           xValue: Xvalue,
           yValue: Yvalue,
-          backgroundColor: "rgba(245,245,245)",
+          backgroundColor: "rgba(245, 245, 245)",
           content: label_map,
           font: {
             size: 20,
@@ -54,40 +57,50 @@ export const options = {
   },
 };
 
-
-
 export default function Chart({ newData }) {
-    console.log(newData.datasets[0].data[newData.datasets[0].data.length-1]);
-    const inputElement = useRef();
+  const inputElement = useRef();
+  const [showTopValues, setShowTopValues] = useState(false);
 
-     const calc = ()=>{
-      label_map.length=0
-      for(let i=0;i<newData.datasets.length;i++){
-        let label=[]
-        label.push(newData.datasets[i].label)
-        label.push(newData.datasets[i].data[newData.datasets[i].data.length-1])
-        label_map.push(label)
+  const calc = () => {
+    if (!showTopValues) {
+      label_map.length = 0;
+      for (let i = 0; i < newData.datasets.length; i++) {
+        let label = [];
+        label.push(newData.datasets[i].label);
+        label.push(newData.datasets[i].data[newData.datasets[i].data.length - 1]);
+        label_map.push(label);
       }
-      console.log(label_map)
-      inputElement.current.update()
+    } else {
+      label_map.length = 0;
+    }
+    console.log(label_map);
+    inputElement.current.update();
+    setShowTopValues(!showTopValues);
+  };
 
-
-     }
-  
   return (
-       <>
-       {(
-          <div className="flex justify-center">
-            <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold  px-2 rounded"
-              onClick={calc}
-            >
-              See Top 10 Values
-            </button>
-          </div>
-        )}
+    <>
+      {showTopValues ? (
+        <div className="flex md:justify-center">
+          <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold px-2 rounded"
+            onClick={calc}
+          >
+            Hide Top 10 Values
+          </button>
+        </div>
+      ) : (
+        <div className="flex md:justify-center">
+          <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold px-2 rounded"
+            onClick={calc}
+          >
+            Show Top 10 Values
+          </button>
+        </div>
+      )}
 
-       <Line options={options} data={newData} redraw={true} ref={inputElement} />
+      <Line options={options} data={newData} redraw={true} ref={inputElement} />
     </>
-  )
+  );
 }

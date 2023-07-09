@@ -1,10 +1,8 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { read, utils } from "xlsx";
 import Visualization from "./Visualization";
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
-
 
 const DataLoad = () => {
   let plate_id_type_mapping = {};
@@ -290,10 +288,8 @@ const DataLoad = () => {
 
   return (
     <>
-
-      <div className=" flex m-2 p-2">
-
-        <div className="flex items-center m-4 justify-around ">
+      <div className=" xl:flex ">
+        <div className="flex items-center m-2 justify-around ">
           <label htmlFor="plateInput" className="mr-4">
             Choose Plate
           </label>
@@ -309,20 +305,33 @@ const DataLoad = () => {
             />
             <label
               htmlFor="plateInput"
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+              className={`bg-${
+                plate.length > 0 ? "green" : "blue"
+              }-500 hover:bg-${
+                plate.length > 0 ? "green" : "blue"
+              }-400 text-white font-bold py-2 px-4 border-b-4 border-${
+                plate.length > 0 ? "green" : "blue"
+              }-700 hover:border-${
+                plate.length > 0 ? "green" : "blue"
+              }-500 rounded cursor-pointer`}
             >
-              Upload
+              {plate.length > 0 ? "Uploaded" : "Upload"}
             </label>
           </div>
           <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 ml-4 rounded align-middle"
+            className={`${
+              plate.length === 0
+                ? "bg-red-300 text-gray-700"
+                : "bg-red-500 hover:bg-red-400 text-white"
+            } font-bold py-2 px-4 ml-4 border-b-4 border-red-700 hover:border-red-500 rounded align-middle`}
             onClick={resetPlate}
+            disabled={plate.length === 0}
           >
             Reset Plate
           </button>
         </div>
 
-        <div className="flex items-center m-4 justify-around">
+        <div className="flex items-center m-2 justify-around">
           <label htmlFor="T0input" className="mr-4">
             Choose T0
           </label>
@@ -338,20 +347,31 @@ const DataLoad = () => {
             />
             <label
               htmlFor="T0input"
-              className="bg-red-500 hover:bg-red-700 ml-4 text-white font-bold py-2 px-4 rounded cursor-pointer"
+              className={`bg-${T0.length > 0 ? "green" : "blue"}-500 hover:bg-${
+                T0.length > 0 ? "green" : "blue"
+              }-400 text-white font-bold py-2 px-4 border-b-4 border-${
+                T0.length > 0 ? "green" : "blue"
+              }-700 hover:border-${
+                T0.length > 0 ? "green" : "blue"
+              }-500 rounded cursor-pointer`}
             >
-              Upload
+              {T0.length > 0 ? "Uploaded" : "Upload"}
             </label>
           </div>
           <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 ml-4 rounded align-middle"
+            className={`${
+              T0.length === 0
+                ? "bg-red-300 text-gray-700"
+                : "bg-red-500 hover:bg-red-400 text-white"
+            } font-bold py-2 px-4 ml-4 border-b-4 border-red-700 hover:border-red-500 rounded align-middle`}
             onClick={resetT0}
+            disabled={T0.length === 0}
           >
-            Reset Plate
+            Reset T0
           </button>
         </div>
 
-        <div className="flex items-center m-4 justify-around ">
+        <div className="flex items-center m-2 justify-around ">
           <label htmlFor="ODinput" className="mr-4">
             Choose OD
           </label>
@@ -367,32 +387,50 @@ const DataLoad = () => {
             />
             <label
               htmlFor="ODinput"
-              className="bg-red-500 hover:bg-red-700 ml-3 text-white font-bold py-2 px-4 rounded cursor-pointer"
+              className={`bg-${OD.length > 0 ? "green" : "blue"}-500 hover:bg-${
+                OD.length > 0 ? "green" : "blue"
+              }-400 text-white font-bold py-2 px-4 border-b-4 border-${
+                OD.length > 0 ? "green" : "blue"
+              }-700 hover:border-${
+                OD.length > 0 ? "green" : "blue"
+              }-500 rounded cursor-pointer`}
             >
-              Upload
+              {OD.length > 0 ? "Uploaded" : "Upload"}
             </label>
           </div>
           <button
-            className="bg-red-500 hover:bg-red-700  text-white font-bold py-2 px-4 ml-4 rounded align-middle"
+            className={`${
+              OD.length === 0
+                ? "bg-red-300 text-gray-700"
+                : "bg-red-500 hover:bg-red-400 text-white"
+            } font-bold py-2 px-4 ml-4 border-b-4 border-red-700 hover:border-red-500 rounded align-middle`}
             onClick={resetOD}
+            disabled={OD.length === 0}
           >
-            Reset Plate
+            Reset OD
           </button>
         </div>
       </div>
 
-       <div className="flex justify-end">
+      <div className="flex justify-end">
         <button
           onClick={exportToExcel}
-          className="bg-blue-500 hover:bg-vlue-700 text-white font-bold py-2 px-4 rounded"
+          className={`${
+            OD < 1 || T0 < 1
+              ? "bg-blue-300 text-gray-700"
+              : "bg-blue-500 hover:bg-blue-400 text-white"
+          } font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded align-middle`}
+          disabled={OD < 1 || T0 < 1}
         >
           Export to Excel
         </button>
       </div>
 
-      <div>{ OD.length && T0.length && <Visualization newData={final_top_array} />} </div>
-
-      
+      <div>
+        {OD.length > 0 && T0.length > 0 && (
+          <Visualization newData={final_top_array} />
+        )}
+      </div>
     </>
   );
 };
